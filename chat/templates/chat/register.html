@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Регистрация</title>
+</head>
+<body>
+    <h2>Страница регистрации</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Используйте этот метод для отображения формы -->
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+    
+    <!-- Отображение сообщений об ошибках -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

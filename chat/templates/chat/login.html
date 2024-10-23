@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Вход</title>
+</head>
+<body>
+{% csrf_token %}
+    <h2>Страница входа</h2>
+    <form id="loginForm">
+        {% csrf_token %}
+        <label for="username">Имя пользователя:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Войти">
+    </form>
+
+    <script>
+        document.getElementById('loginForm').onsubmit = async function(event) {
+            event.preventDefault();  // Остановить стандартное поведение формы
+
+            const formData = new FormData(this);
+            const response = await fetch('/chat/login/', {  // Убедитесь, что путь правильный
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'  // Убедитесь, что это AJAX-запрос
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('Token', data.access_token);  // Сохраняем токен в локальном хранилище
+                window.location.href = '/chat/choice/';  // Перенаправляем на страницу выбора комнат
+            } else {
+                const errorMessage = await response.text();
+                alert(errorMessage);  // Выводим сообщение об ошибке
+            }
+        };
+    </script>
+</body>
+</html>
